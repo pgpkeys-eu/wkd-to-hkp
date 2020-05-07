@@ -45,7 +45,7 @@ touch $SPOOLDIR/lock
 files=($(find $WKD_SEARCH_PATH -type f -newer $SPOOLDIR/last \! -newer $SPOOLDIR/lock))
 
 for file in "${files[@]}"; do
-    file -b $file | egrep -qi ^GPG || continue
+    file -b $file | egrep -qi '^(PGP|GPG)' || continue
     for server in "${HKP_SERVERS[@]}"; do
         keyid=$(gpg --no-default-keyring --keyring "$file" --list-keys --with-colons \
             | awk -F: '/^pub/ {print $5}')
