@@ -15,8 +15,8 @@ copy or soft link the script `wkd-to-hkp` into `/etc/cron.hourly`.
 ### Security
 
 For extra safety, you should run this command as a non-root user. You will
-have to change the permissions on SPOOLDIR (default: /var/spool/wkd-to-hkp) and
-invoke the command from the user's crontab (using crontab -e).
+have to change the permissions on `SPOOLDIR` (default: `/var/spool/wkd-to-hkp`)
+and invoke the command from the user's crontab (using `crontab -e`).
 
 ### Caveats
 
