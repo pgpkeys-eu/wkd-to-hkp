@@ -30,6 +30,7 @@ if [[ -f $CONFIG ]]; then
     . $CONFIG
 fi
 
+mkdir -p $SPOOLDIR
 if [[ ! -f $SPOOLDIR/last ]]; then
     echo "Looks like we were never invoked before. Bookmarking this date."
     touch $SPOOLDIR/last
@@ -39,7 +40,6 @@ fi
 if [[ -f $SPOOLDIR/lock ]]; then
     die 2 "Already running. If this is in error, remove $SPOOLDIR/lock"
 fi
-mkdir -p $SPOOLDIR
 touch $SPOOLDIR/lock
 
 files=($(find $WKD_SEARCH_PATH -type f -newer $SPOOLDIR/last \! -newer $SPOOLDIR/lock))
