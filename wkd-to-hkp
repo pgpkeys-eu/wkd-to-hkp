@@ -30,17 +30,17 @@ if [[ -f $CONFIG ]]; then
     . $CONFIG
 fi
 
-if [[ -f $SPOOLDIR/lock ]]; then
-    die 2 "Already running. If this is in error, remove $SPOOLDIR/lock"
-fi
-mkdir -p $SPOOLDIR
-touch $SPOOLDIR/lock
-
 if [[ ! -f $SPOOLDIR/last ]]; then
     echo "Looks like we were never invoked before. Bookmarking this date."
     touch $SPOOLDIR/last
     exit 0
 fi
+
+if [[ -f $SPOOLDIR/lock ]]; then
+    die 2 "Already running. If this is in error, remove $SPOOLDIR/lock"
+fi
+mkdir -p $SPOOLDIR
+touch $SPOOLDIR/lock
 
 files=($(find $WKD_SEARCH_PATH -type f -newer $SPOOLDIR/last -older $SPOOLDIR/lock))
 
