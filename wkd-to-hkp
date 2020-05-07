@@ -42,7 +42,7 @@ fi
 mkdir -p $SPOOLDIR
 touch $SPOOLDIR/lock
 
-files=($(find $WKD_SEARCH_PATH -type f -newer $SPOOLDIR/last -older $SPOOLDIR/lock))
+files=($(find $WKD_SEARCH_PATH -type f -newer $SPOOLDIR/last \! -newer $SPOOLDIR/lock))
 
 for file in "${files[@]}"; do
     file -b $file | egrep -qi ^GPG || continue
