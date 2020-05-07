@@ -49,7 +49,7 @@ for file in "${files[@]}"; do
     for server in "${HKP_SERVERS[@]}"; do
         keyid=$(gpg --no-default-keyring --keyring "$file" --list-keys --with-colons \
             | awk -F: '/^pub/ {print $5}')
-        gpg --no-default-keyring --keyring "$file" --keyserver "$server" --send "$keyid"
+        gpg --no-default-keyring --keyring "$file" --keyserver "$server" --send-key "$keyid"
     done
 done
 
