@@ -1,0 +1,55 @@
+#!/bin/bash
+
+set -euo pipefail
+err_report() {
+    rm $SPOOLDIR/lock || true
+    echo "errexit on line $(caller)" >&2
+}
+trap err_report ERR
+
+die() {
+    echo $2 >&2
+    exit $1
+}
+
+# set defaults
+SPOOLDIR=/var/spool/wkd-to-hkp
+WKD_SEARCH_PATH=/var/lib/gnupg/wks/*/hu
+HKP_SERVERS=(
+    http://pool.sks-keyservers.net
+    http://keys.openpgp.org
+)
+
+if [[ $1 ]]; then
+    CONFIG=$1
+else
+    CONFIG=/etc/wkd-to-hkp.conf
+fi
+
+if [[ -f $CONFIG ]]; then
+    . $CONFIG
+fi
+
+if [[ -f $SPOOLDIR/lock ]]; then
+    die 2 "Already running. If this is in error, remove $SPOOLDIR/lock"
+fi
+mkdir -p $SPOOLDIR
+touch $SPOOLDIR/lock
+
+if [[ ! -f $SPOOLDIR/last ]]; then
+    touch $SPOOLDIR/last
+    exit 0
+fi
+
+files=($(find $WKD_SEARCH_PATH -type f -newer $SPOOLDIR/last -older $SPOOLDIR/lock))
+
+for file in "${files[@]}"; do
+    file -b $file | egrep -qi ^GPG || continue
+    for server in "${HKP_SERVERS[@]}"; do
+        keyid=$(gpg --no-default-keyring --keyring "$file" --list-keys --with-colons \
+            | awk -F: '/^pub/ {print $5}')
+        gpg --no-default-keyring --keyring "$file" --keyserver "$server" --send "$keyid"
+    done
+done
+
+mv $SPOOLDIR/lock $SPOOLDIR/last
