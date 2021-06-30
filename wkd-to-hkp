@@ -16,8 +16,9 @@ die() {
 SPOOLDIR=/var/spool/wkd-to-hkp
 WKD_SEARCH_PATH=/var/lib/gnupg/wks/*/hu
 HKP_SERVERS=(
-    http://pool.sks-keyservers.net
-    http://keys.openpgp.org
+    keys.ubuntu.org
+    pgpkeys.eu
+    keys.openpgp.org
 )
 
 if [[ ${1:-} ]]; then
