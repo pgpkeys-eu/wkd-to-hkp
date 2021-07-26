@@ -16,7 +16,7 @@ die() {
 SPOOLDIR=/var/spool/wkd-to-hkp
 WKD_SEARCH_PATH=/var/lib/gnupg/wks/*/hu
 HKP_SERVERS=(
-    keys.ubuntu.org
+    keyserver.ubuntu.com
     pgpkeys.eu
     keys.openpgp.org
 )

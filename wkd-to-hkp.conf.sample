@@ -8,4 +8,4 @@
 #WKD_SEARCH_PATH=/var/lib/gnupg/wks/*/hu
 
 # List of HKP servers to submit to
-#HKP_SERVERS=( pool.sks-keyservers.net keys.openpgp.org )
+#HKP_SERVERS=( keyserver.ubuntu.com pgpkeys.eu keys.openpgp.org )
